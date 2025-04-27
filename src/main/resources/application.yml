@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+testcontainers:
+  enabled: false
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event_management
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  cache:
+    type: caffeine
+
+jwt:
+  secret: bG9uZ3JhbmRvbXNlY3JldGtleWZvcnlvdXJqc3dlYmFwcGxpY2F0aW9uMTIzNDU2
+  expirationMs: 3600000
