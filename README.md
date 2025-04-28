@@ -89,7 +89,52 @@ This repository contains the backend implementation of a **Scalable Event Manage
         ```
 * **GET /api/v1/attendance/user**
     * Get all events a user is attending.
+      **Request Body Parameters:**
 
+* `status` (String): The attendance status. Possible values are: `GOING`, `NOT_GOING`, `MAYBE`.
+* `Authentication`: Requires user authentication to identify the user marking attendance. The user's ID is typically extracted from the authentication context.
+
+**Example Request (using curl):**
+
+```bash
+curl -X POST \
+'http://localhost:8080/api/v1/attendance/a1b2c3d4-e5f6-7890-1234-567890abcdef' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer <YOUR_AUTH_TOKEN>' \
+-d '{
+"status": "GOING"
+}'
+  ```
+## `GET /api/v1/attendance/event/{eventId}/count`
+
+**Description:** Retrieves the count of attendees (status `GOING` or `MAYBE`) for a specific event.
+
+**Path Parameter:**
+
+* `eventId` (UUID): The unique identifier of the event.
+
+**Authentication:** May require specific authorization to access attendance counts for an event.
+
+**Example Request (using curl):**
+
+```bash
+curl -X GET \
+  'http://localhost:8080/api/v1/attendance/event/a1b2c3d4-e5f6-7890-1234-567890abcdef/count' \
+  -H 'Authorization: Bearer <YOUR_ADMIN_TOKEN>'
+  ```
+## `GET /api/v1/attendance/user`
+
+**Description:** Retrieves all events that the authenticated user is attending.
+
+**Authentication:** Requires user authentication to identify the user whose attendances are being requested.
+
+**Example Request (using curl):**
+
+```bash
+curl -X GET \
+  'http://localhost:8080/api/v1/attendance/user' \
+  -H 'Authorization: Bearer <YOUR_AUTH_TOKEN>'
+  ```
 ## Authentication & Authorization
 
 * **JWT Tokens**: Generated upon login and used for subsequent requests.

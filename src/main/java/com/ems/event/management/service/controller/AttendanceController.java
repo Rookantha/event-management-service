@@ -33,4 +33,16 @@ public class AttendanceController {
         List<Attendance> attendances = attendanceService.getAttendanceForUser(userId);
         return ResponseEntity.ok(attendances);
     }
+
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<List<Attendance>> getEventAttendances(@PathVariable UUID eventId) {
+        List<Attendance> attendances = attendanceService.getAttendanceForEvent(eventId);
+        return ResponseEntity.ok(attendances);
+    }
+
+    @GetMapping("/event/{eventId}/count")
+    public ResponseEntity<Long> countEventAttendees(@PathVariable UUID eventId) {
+        long attendeeCount = attendanceService.countAttendees(eventId);
+        return ResponseEntity.ok(attendeeCount);
+    }
 }

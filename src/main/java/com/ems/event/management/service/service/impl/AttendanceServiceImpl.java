@@ -4,7 +4,6 @@ import com.ems.event.management.service.entity.Attendance;
 import com.ems.event.management.service.enums.Status;
 import com.ems.event.management.service.repository.AttendanceRepository;
 import com.ems.event.management.service.service.AttendanceService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,9 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class AttendanceServiceImpl implements AttendanceService {
+
     private final AttendanceRepository attendanceRepository;
+
+    public AttendanceServiceImpl(AttendanceRepository attendanceRepository) {
+        this.attendanceRepository = attendanceRepository;
+    }
 
     @Override
     public Attendance markAttendance(UUID eventId, UUID userId, Status status) {
@@ -24,7 +27,6 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .status(status)
                 .respondedAt(LocalDateTime.now())
                 .build();
-
         return attendanceRepository.save(attendance);
     }
 
@@ -40,8 +42,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public long countAttendees(UUID eventId) {
-        return attendanceRepository.findByEventId(eventId).stream()
-                .filter(a -> a.getStatus() == Status.GOING)
+        List<Attendance> attendances = attendanceRepository.findByEventId(eventId);
+        return attendances.stream()
+                .filter(attendance -> attendance.getStatus() == Status.GOING || attendance.getStatus() == Status.MAYBE)
                 .count();
     }
 }
