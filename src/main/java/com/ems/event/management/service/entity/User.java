@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +35,10 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    // Add a OneToMany relationship for events hosted by this user
+    @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events;
+
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
@@ -44,6 +49,4 @@ public class User {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-
 }

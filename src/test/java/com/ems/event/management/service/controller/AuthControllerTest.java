@@ -3,6 +3,7 @@ package com.ems.event.management.service.controller;
 import com.ems.event.management.service.entity.User;
 import com.ems.event.management.service.repository.UserRepository;
 import com.ems.event.management.service.security.JwtUtil;
+import com.ems.event.management.service.security.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ class AuthControllerTest {
         user.setEmail(email);
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(jwtUtil.generateToken(any(), any())).thenReturn("mocked-jwt-token");
+        when(jwtUtil.generateToken(any(UUID.class), any(String.class))).thenReturn("mocked-jwt-token");
 
         mockMvc.perform(post("/api/v1/auth/login")
                         .param("email", email)
@@ -63,6 +64,11 @@ class AuthControllerTest {
         @Bean
         public JwtUtil jwtUtil() {
             return Mockito.mock(JwtUtil.class);
+        }
+
+        @Bean
+        public UserDetailsServiceImpl userDetailsService() {
+            return Mockito.mock(UserDetailsServiceImpl.class);
         }
     }
 }
