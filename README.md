@@ -140,7 +140,7 @@ spring:
       ddl-auto: update
     show-sql: true
 jwt:
-  secret: bG9uZ3JhbmRvbXNlY3JldGtleWZvcnlvdXJqc3dlYmFwcGxpY2F0aW9uMTIzNDU2
+  secret: --- your secret key ----
   expirationMs: 3600000
 
 ```
