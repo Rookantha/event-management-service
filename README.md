@@ -14,6 +14,7 @@ This repository contains the backend implementation of a **Scalable Event Manage
 * [Caching](#caching)
 * [Error Handling](#error-handling)
 * [Testing](#testing)
+* [Rate Limiter](#rate-limiter)
 * [Configuration](#configuration)
 * [Setup Instructions](#setup-instructions)
 * [Future Enhancements](#future-enhancements)
@@ -188,7 +189,7 @@ curl -X GET \
 * **Integration Tests**: Use Testcontainers for database testing.
 * **Mocking**: Mockito is used for mocking dependencies.
 
-## Resilience4j Rate Limiter in Spring Boot
+## Rate Limiter
 
 add rate limiting to Spring Boot app using Resilience4j.
 
