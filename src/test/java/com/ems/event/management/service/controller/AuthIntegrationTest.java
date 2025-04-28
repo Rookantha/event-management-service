@@ -41,12 +41,12 @@ class AuthIntegrationTest {
     private EventRepository eventRepository;
 
     @Autowired
-    private JwtUtil jwtUtil; // Mocked bean will be injected here
+    private JwtUtil jwtUtil;
 
     @BeforeEach
     void setUp() {
-        eventRepository.deleteAll(); // Clean up dependent records
-        userRepository.deleteAll(); // Clean up users
+        eventRepository.deleteAll();
+        userRepository.deleteAll();
 
         User user = new User();
         user.setId(UUID.randomUUID());
