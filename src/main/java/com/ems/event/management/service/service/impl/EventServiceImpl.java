@@ -5,6 +5,7 @@ import com.ems.event.management.service.enums.Visibility;
 import com.ems.event.management.service.exception.ResourceNotFoundException;
 import com.ems.event.management.service.repository.EventRepository;
 import com.ems.event.management.service.service.EventService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,6 +25,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
     @Override
+    @RateLimiter(name = "default", fallbackMethod = "rateLimitExceeded")
     public Event createEvent(Event event) {
         return eventRepository.save(event);
     }
@@ -100,5 +102,10 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
         eventRepository.delete(event);
+    }
+
+    // Fallback method when rate limit is exceeded
+    public Event rateLimitExceeded(UUID eventId, Event event, Throwable throwable) {
+        throw new IllegalStateException("Rate limit exceeded, please try again later.");
     }
 }
