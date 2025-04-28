@@ -1,3 +1,7 @@
+# Exclude the .env file
+.env
+
+# Your other exclusions
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -30,6 +34,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Environment Files ###
-.env
