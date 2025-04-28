@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(AuthIntegrationTest.MockConfig.class) // Import the mock configuration
+@Import(AuthIntegrationTest.MockConfig.class)
 class AuthIntegrationTest {
 
     @Autowired
@@ -48,12 +48,14 @@ class AuthIntegrationTest {
         eventRepository.deleteAll();
         userRepository.deleteAll();
 
+        // Add a sample user
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setEmail("testuser@example.com");
 
         userRepository.save(user);
 
+        // Mock the JWT token generation
         when(jwtUtil.generateToken(any(UUID.class), any(String.class))).thenReturn("mocked-jwt-token");
     }
 
@@ -73,7 +75,7 @@ class AuthIntegrationTest {
 
         @Bean
         public JwtUtil jwtUtil() {
-            return Mockito.mock(JwtUtil.class); // Provide a mock for JwtUtil
+            return Mockito.mock(JwtUtil.class);
         }
     }
 }
