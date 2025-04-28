@@ -1,6 +1,7 @@
 package com.ems.event.management.service.controller;
 
 import com.ems.event.management.service.dto.AttendanceRequestDTO;
+import com.ems.event.management.service.dto.CountDTO;
 import com.ems.event.management.service.entity.Attendance;
 import com.ems.event.management.service.service.AttendanceService;
 import jakarta.validation.Valid;
@@ -65,13 +66,16 @@ public class AttendanceController {
     }
 
     @GetMapping("/event/{eventId}/count")
-    public ResponseEntity<EntityModel<Long>> countEventAttendees(@PathVariable UUID eventId) {
+    public ResponseEntity<EntityModel<CountDTO>> countEventAttendees(@PathVariable UUID eventId) {
         long attendeeCount = attendanceService.countAttendees(eventId);
 
-        EntityModel<Long> model = EntityModel.of(attendeeCount,
+        CountDTO countDTO = new CountDTO(attendeeCount);
+
+        EntityModel<CountDTO> model = EntityModel.of(countDTO,
                 linkTo(methodOn(AttendanceController.class).countEventAttendees(eventId)).withSelfRel()
         );
 
         return ResponseEntity.ok(model);
     }
+
 }
