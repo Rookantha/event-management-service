@@ -175,7 +175,29 @@ curl -X GET \
 * **Integration Tests**: Use Testcontainers for database testing.
 * **Mocking**: Mockito is used for mocking dependencies.
 
-## Configuration
+## Resilience4j Rate Limiter in Spring Boot: Quick Summary
+
+This guide explains how to add rate limiting to your Spring Boot app using Resilience4j.
+
+**Key Steps:**
+
+1.  **Add Dependency:** Include `resilience4j-spring-boot2` in your `pom.xml`.
+2.  **Configure:** Define rate limits (requests/period, refresh interval, timeout) in `application.yml`.
+3.  **Enable (Implicit):** Resilience4j auto-configures. Ensure `@EnableAspectJAutoProxy` in your main class if using annotations.
+4.  **Annotate:** Use `@RateLimiter(name = "yourConfigName", fallbackMethod = "yourFallback")` on methods or controllers.
+5.  **Fallback:** Create a `fallbackMethod` to handle rate-limited requests.
+6.  **Test:** Run and send many requests to see the rate limiting in action.
+7.  **(Optional) Metrics:** Add Micrometer and enable Resilience4j metrics in `application.yml` to monitor rate limiter performance via `/actuator/metrics`.
+8.  **(Optional) Advanced:** Configure multiple rate limiters for different parts of your application.
+
+**Benefits:**
+
+* Easy to implement with annotations and YAML.
+* Provides a fallback mechanism for exceeded limits.
+* Offers optional monitoring via Spring Boot Actuator.
+* Supports advanced configurations with multiple rate limiters.
+
+**Goal:** Protect your Spring Boot application from excessive requests and ensure stability.## Configuration
 
 ### `application.yml`
 

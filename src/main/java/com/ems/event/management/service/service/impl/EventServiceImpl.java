@@ -101,7 +101,8 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        eventRepository.delete(event);
+        event.setArchived(true);
+        eventRepository.save(event);
     }
 
     // Fallback method when rate limit is exceeded
