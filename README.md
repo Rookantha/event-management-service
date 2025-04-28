@@ -175,9 +175,9 @@ curl -X GET \
 * **Integration Tests**: Use Testcontainers for database testing.
 * **Mocking**: Mockito is used for mocking dependencies.
 
-## Resilience4j Rate Limiter in Spring Boot: Quick Summary
+## Resilience4j Rate Limiter in Spring Boot
 
-This guide explains how to add rate limiting to your Spring Boot app using Resilience4j.
+add rate limiting to Spring Boot app using Resilience4j.
 
 **Key Steps:**
 
