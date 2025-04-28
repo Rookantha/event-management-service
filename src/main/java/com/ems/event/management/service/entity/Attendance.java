@@ -2,6 +2,7 @@ package com.ems.event.management.service.entity;
 
 import com.ems.event.management.service.enums.Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Attendance {
     @Id
     private UUID userId;
 
+    @NotNull(message = "Status is required")
     @Enumerated(EnumType.STRING)
     private Status status;
 
