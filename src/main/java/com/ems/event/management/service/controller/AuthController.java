@@ -1,6 +1,7 @@
 package com.ems.event.management.service.controller;
 
 import com.ems.event.management.service.entity.User;
+import com.ems.event.management.service.enums.Role;
 import com.ems.event.management.service.repository.UserRepository;
 import com.ems.event.management.service.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,26 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         String token = jwtUtil.generateToken(user.getId(), user.getRole().name());
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestParam String name,
+                                           @RequestParam String email,
+                                           @RequestParam Role role) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already in use");
+        }
+
+        User newUser = User.builder()
+                .name(name)
+                .email(email)
+                .role(role)
+                .build();
+
+        userRepository.save(newUser);
+
+        String token = jwtUtil.generateToken(newUser.getId(), newUser.getRole().name());
         return ResponseEntity.ok(token);
     }
 }

@@ -60,6 +60,19 @@ This repository contains the backend implementation of a **Scalable Event Manage
         }
         ```
     * **Response**: JWT token for authenticated user.
+* **POST /api/v1/auth/register**
+    * **Method**: `POST`
+    * **URL**: `http://localhost:8080/api/v1/auth/register`
+    * **Request Type**: `x-www-form-urlencoded`
+    * **Request Body (in Postman):**
+        * Select the `Body` tab.
+        * Choose `x-www-form-urlencoded`.
+        * Add the following key-value pairs:
+          | Key   | Value           |
+          | :---- | :-------------- |
+          | name  | John Doe        |
+          | email | john@example.com |
+          | role  | USER            |
 
 ### Events
 
