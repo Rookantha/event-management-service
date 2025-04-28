@@ -1,6 +1,5 @@
 package com.ems.event.management.service.security;
 
-
 import com.ems.event.management.service.security.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,13 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String role = jwtUtil.getRoleFromToken(token);
 
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userId, null,
-                                Collections.singleton(() -> "ROLE_" + role));
+                        new UsernamePasswordAuthenticationToken(
+                                userId,
+                                null,
+                                Collections.singleton(() -> "ROLE_" + role)
+                        );
 
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

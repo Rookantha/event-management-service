@@ -1,0 +1,16 @@
+# application-local.yml (in src/test/resources)
+
+testcontainers:
+  enabled: true
+
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

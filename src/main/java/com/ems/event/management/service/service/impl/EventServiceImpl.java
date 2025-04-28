@@ -1,6 +1,5 @@
 package com.ems.event.management.service.service.impl;
 
-
 import com.ems.event.management.service.entity.Event;
 import com.ems.event.management.service.enums.Visibility;
 import com.ems.event.management.service.exception.ResourceNotFoundException;
@@ -21,6 +20,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
+
     private final EventRepository eventRepository;
 
     @Override
@@ -41,17 +41,17 @@ public class EventServiceImpl implements EventService {
             @CacheEvict(value = "eventDetails", key = "#eventId")
     })
     public Event updateEvent(UUID eventId, Event updatedEvent) {
-        Event existing = eventRepository.findById(eventId)
+        Event existingEvent = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        existing.setTitle(updatedEvent.getTitle());
-        existing.setDescription(updatedEvent.getDescription());
-        existing.setStartTime(updatedEvent.getStartTime());
-        existing.setEndTime(updatedEvent.getEndTime());
-        existing.setLocation(updatedEvent.getLocation());
-        existing.setVisibility(updatedEvent.getVisibility());
+        existingEvent.setTitle(updatedEvent.getTitle());
+        existingEvent.setDescription(updatedEvent.getDescription());
+        existingEvent.setStartTime(updatedEvent.getStartTime());
+        existingEvent.setEndTime(updatedEvent.getEndTime());
+        existingEvent.setLocation(updatedEvent.getLocation());
+        existingEvent.setVisibility(updatedEvent.getVisibility());
 
-        return eventRepository.save(existing);
+        return eventRepository.save(existingEvent);
     }
 
     @Override
@@ -69,6 +69,14 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
+    public boolean isHost(UUID eventId, UUID userId) {
+        return eventRepository.findById(eventId)
+                .filter(event -> event.getHost().getId().equals(userId))
+                .isPresent();
+    }
+
+
+    @Override
     public Page<Event> listEventsByVisibility(Visibility visibility, Pageable pageable) {
         return eventRepository.findByVisibilityAndArchivedFalse(visibility, pageable);
     }
@@ -82,5 +90,17 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> listEventsByHost(UUID hostId) {
         return eventRepository.findByHostId(hostId);
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = "upcomingEvents", allEntries = true),
+            @CacheEvict(value = "eventDetails", key = "#eventId")
+    })
+    public void deleteEvent(UUID eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        eventRepository.delete(event);
     }
 }

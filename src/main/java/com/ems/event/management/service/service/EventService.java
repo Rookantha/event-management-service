@@ -11,9 +11,7 @@ import java.util.UUID;
 
 public interface EventService {
 
-
     Event createEvent(Event event);
-
 
     Optional<Event> getEventById(UUID eventId);
 
@@ -21,9 +19,13 @@ public interface EventService {
 
     void archiveEvent(UUID eventId);
 
+    public boolean isHost(UUID eventId, UUID userId);
+
     Page<Event> listEventsByVisibility(Visibility visibility, Pageable pageable);
 
     Page<Event> listUpcomingEvents(Pageable pageable);
 
     List<Event> listEventsByHost(UUID hostId);
+
+    void deleteEvent(UUID eventId);
 }

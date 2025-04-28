@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class EventController {
     private final UserRepository userRepository;
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<EventResponseDTO> createEvent(
             @AuthenticationPrincipal UUID userId,
             @Valid @RequestBody EventRequestDTO eventRequestDTO) {
@@ -73,6 +75,7 @@ public class EventController {
     }
 
     @PatchMapping("/{eventId}")
+    @PreAuthorize("hasRole('ADMIN') or @eventServiceImpl.isHost(#eventId, principal.id)")  // Use principal.id (UUID)
     public ResponseEntity<EventResponseDTO> updateEvent(
             @PathVariable UUID eventId,
             @Valid @RequestBody EventRequestDTO eventRequestDTO) {
@@ -93,6 +96,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{eventId}")
+    @PreAuthorize("hasRole('ADMIN') or @eventServiceImpl.isHost(#eventId, principal.id)")  // Use principal.id (UUID)
     public ResponseEntity<Void> archiveEvent(@PathVariable UUID eventId) {
         eventService.archiveEvent(eventId);
         return ResponseEntity.noContent().build();
