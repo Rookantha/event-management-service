@@ -105,7 +105,7 @@ curl -X POST \
   "status": "GOING"
   }'
   ```
-* ** `GET /api/v1/attendance/event/{eventId}/count`
+* **GET /api/v1/attendance/event/{eventId}/count**
 
 **Description:** Retrieves the count of attendees (status `GOING` or `MAYBE`) for a specific event.
 
@@ -122,7 +122,7 @@ curl -X GET \
   'http://localhost:8080/api/v1/attendance/event/a1b2c3d4-e5f6-7890-1234-567890abcdef/count' \
   -H 'Authorization: Bearer <YOUR_ADMIN_TOKEN>'
   ```
-* ** `GET /api/v1/attendance/user`
+* **GET /api/v1/attendance/user **
 
 **Description:** Retrieves all events that the authenticated user is attending.
 
