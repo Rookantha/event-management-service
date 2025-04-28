@@ -1,5 +1,3 @@
-# application-local.yml (in src/test/resources)
-
 testcontainers:
   enabled: true
 
@@ -14,3 +12,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  secret: bG9uZ3JhbmRvbXNlY3JldGtleWZvcnlvdXJqc3dlYmFwcGxpY2F0aW9uMTIzNDU2
+  expirationMs: 3600000
