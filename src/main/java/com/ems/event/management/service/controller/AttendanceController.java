@@ -19,12 +19,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/v1/attendance")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AttendanceController {
+
     private final AttendanceService attendanceService;
 
-    @PostMapping("/{eventId}")
+    @PostMapping("/events/{eventId}/attendances")
     public ResponseEntity<EntityModel<Attendance>> markAttendance(
             @AuthenticationPrincipal UUID userId,
             @PathVariable UUID eventId,
@@ -33,39 +34,39 @@ public class AttendanceController {
         Attendance attendance = attendanceService.markAttendance(eventId, userId, request.getStatus());
 
         EntityModel<Attendance> model = EntityModel.of(attendance,
-                linkTo(methodOn(AttendanceController.class).markAttendance(userId, eventId, request)).withSelfRel()
+                linkTo(methodOn(AttendanceController.class).getEventAttendances(eventId)).withRel("event-attendances")
         );
 
-        return ResponseEntity.ok(model);
+        return ResponseEntity.status(201).body(model);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<CollectionModel<EntityModel<Attendance>>> getUserAttendances(@AuthenticationPrincipal UUID userId) {
+    @GetMapping("/users/me/attendances")
+    public ResponseEntity<CollectionModel<EntityModel<Attendance>>> getUserAttendances(
+            @AuthenticationPrincipal UUID userId) {
+
         List<Attendance> attendances = attendanceService.getAttendanceForUser(userId);
 
         List<EntityModel<Attendance>> models = attendances.stream()
-                .map(attendance -> EntityModel.of(attendance,
-                        linkTo(methodOn(AttendanceController.class).getUserAttendances(userId)).withSelfRel()
-                ))
+                .map(attendance -> EntityModel.of(attendance))
                 .toList();
 
-        return ResponseEntity.ok(CollectionModel.of(models));
+        return ResponseEntity.ok(CollectionModel.of(models,
+                linkTo(methodOn(AttendanceController.class).getUserAttendances(userId)).withSelfRel()));
     }
 
-    @GetMapping("/event/{eventId}")
+    @GetMapping("/events/{eventId}/attendances")
     public ResponseEntity<CollectionModel<EntityModel<Attendance>>> getEventAttendances(@PathVariable UUID eventId) {
         List<Attendance> attendances = attendanceService.getAttendanceForEvent(eventId);
 
         List<EntityModel<Attendance>> models = attendances.stream()
-                .map(attendance -> EntityModel.of(attendance,
-                        linkTo(methodOn(AttendanceController.class).getEventAttendances(eventId)).withSelfRel()
-                ))
+                .map(EntityModel::of)
                 .toList();
 
-        return ResponseEntity.ok(CollectionModel.of(models));
+        return ResponseEntity.ok(CollectionModel.of(models,
+                linkTo(methodOn(AttendanceController.class).getEventAttendances(eventId)).withSelfRel()));
     }
 
-    @GetMapping("/event/{eventId}/count")
+    @GetMapping("/events/{eventId}/attendances/count")
     public ResponseEntity<EntityModel<CountDTO>> countEventAttendees(@PathVariable UUID eventId) {
         long attendeeCount = attendanceService.countAttendees(eventId);
 
@@ -77,5 +78,4 @@ public class AttendanceController {
 
         return ResponseEntity.ok(model);
     }
-
 }

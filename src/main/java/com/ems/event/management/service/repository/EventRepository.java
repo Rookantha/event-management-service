@@ -25,5 +25,6 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
     @Query("SELECT e FROM Event e WHERE e.startTime > CURRENT_TIMESTAMP AND e.archived = false")
     Page<Event> findUpcomingEvents(Pageable pageable);
 
-
+    // Find events that are archived
+    Page<Event> findByArchivedTrue(Pageable pageable);
 }

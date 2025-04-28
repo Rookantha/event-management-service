@@ -76,6 +76,13 @@ This repository contains the backend implementation of a **Scalable Event Manage
     * Update an event (only host or admin).
 * **DELETE /api/v1/events/{eventId}**
     * Archive an event (soft delete).
+* **PATCH /api/v1/events/{eventId}/archive**
+    * Archive an event.
+    * **URL**: `http://localhost:8080/api/v1/events/{eventId}/archive`
+    * **Response**: `204 No Content`
+* **GET /api/v1/events?archived=true**
+    * Check archived events. Ensure the event's `archived` flag is set to `true` in the response.
+    * **URL**: `http://localhost:8080/api/v1/events?archived=true`
 
 ### Attendance
 

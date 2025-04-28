@@ -21,6 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -52,8 +53,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
-    private boolean archived = false;
-
+    private boolean archived = false;  // Flag to track if the event is archived
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

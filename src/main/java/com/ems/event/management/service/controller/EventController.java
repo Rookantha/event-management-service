@@ -1,6 +1,5 @@
 package com.ems.event.management.service.controller;
 
-
 import com.ems.event.management.service.dto.EventRequestDTO;
 import com.ems.event.management.service.dto.EventResponseDTO;
 import com.ems.event.management.service.entity.Event;
@@ -73,8 +72,7 @@ public class EventController {
         EventResponseDTO response = mapToResponse(event, count);
 
         EntityModel<EventResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(EventController.class).getEvent(eventId)).withSelfRel(),
-                linkTo(methodOn(EventController.class).listUpcomingEvents(0, 10)).withRel("upcoming-events")
+                linkTo(methodOn(EventController.class).getEvent(eventId)).withSelfRel()
         );
 
         return ResponseEntity.ok(model);
@@ -126,10 +124,19 @@ public class EventController {
         return ResponseEntity.ok(model);
     }
 
-    @DeleteMapping("/{eventId}")
+    // Archive event (PATCH method)
+    @PatchMapping("/{eventId}/archive")
     @PreAuthorize("hasRole('ADMIN') or @eventServiceImpl.isHost(#eventId, principal.id)")
     public ResponseEntity<Void> archiveEvent(@PathVariable UUID eventId) {
         eventService.archiveEvent(eventId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Delete event (DELETE method)
+    @DeleteMapping("/{eventId}")
+    @PreAuthorize("hasRole('ADMIN') or @eventServiceImpl.isHost(#eventId, principal.id)")
+    public ResponseEntity<Void> deleteEvent(@PathVariable UUID eventId) {
+        eventService.deleteEvent(eventId);
         return ResponseEntity.noContent().build();
     }
 

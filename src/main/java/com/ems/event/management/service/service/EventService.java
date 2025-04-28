@@ -17,9 +17,9 @@ public interface EventService {
 
     Event updateEvent(UUID eventId, Event updatedEvent);
 
-    void archiveEvent(UUID eventId);
+    void archiveEvent(UUID eventId);  // Add method for archiving events
 
-    public boolean isHost(UUID eventId, UUID userId);
+    boolean isHost(UUID eventId, UUID userId);
 
     Page<Event> listEventsByVisibility(Visibility visibility, Pageable pageable);
 
@@ -27,5 +27,5 @@ public interface EventService {
 
     List<Event> listEventsByHost(UUID hostId);
 
-    void deleteEvent(UUID eventId);
+    void deleteEvent(UUID eventId);  // Optional: If you still want the option to hard delete events
 }

@@ -32,7 +32,7 @@ public class EventServiceImpl implements EventService {
     @Cacheable(value = "eventDetails", key = "#eventId")
     public Optional<Event> getEventById(UUID eventId) {
         return eventRepository.findById(eventId)
-                .filter(e -> !e.isArchived());
+                .filter(e -> !e.isArchived());  // Filter out archived events
     }
 
     @Override
@@ -67,14 +67,12 @@ public class EventServiceImpl implements EventService {
         eventRepository.save(event);
     }
 
-
     @Override
     public boolean isHost(UUID eventId, UUID userId) {
         return eventRepository.findById(eventId)
                 .filter(event -> event.getHost().getId().equals(userId))
                 .isPresent();
     }
-
 
     @Override
     public Page<Event> listEventsByVisibility(Visibility visibility, Pageable pageable) {
