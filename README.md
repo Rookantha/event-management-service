@@ -211,7 +211,8 @@ add rate limiting to Spring Boot app using Resilience4j.
 * Offers optional monitoring via Spring Boot Actuator.
 * Supports advanced configurations with multiple rate limiters.
 
-**Goal:** Protect your Spring Boot application from excessive requests and ensure stability.## Configuration
+**Goal:** Protect your Spring Boot application from excessive requests and ensure stability.
+## Configuration
 
 ### `application.yml`
 
